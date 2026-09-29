@@ -1,0 +1,65 @@
+{
+  "name": "boostlite",
+  "private": true,
+  "version": "0.1.0",
+  "author": "BoostLite",
+  "description": "A lightweight, safety-focused performance dashboard for older Windows PCs.",
+  "main": "desktop/main.cjs",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "desktop:dev": "concurrently -k \"vite --host 127.0.0.1\" \"wait-on http://127.0.0.1:5173 && electron desktop/main.cjs\"",
+    "desktop:pack": "pnpm build && electron-builder --win portable",
+    "desktop:installer": "pnpm build && electron-builder --win nsis"
+  },
+  "dependencies": {
+    "systeminformation": "^5.33.13"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^6.1.1",
+    "concurrently": "^9.1.0",
+    "electron": "^35.0.0",
+    "electron-builder": "^26.0.12",
+    "lucide-react": "^0.468.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwindcss": "^4.3.3",
+    "typescript": "~5.7.2",
+    "vite": "^8.3.0",
+    "wait-on": "^8.0.1"
+  },
+  "build": {
+    "appId": "com.boostlite.desktop",
+    "productName": "BoostLite",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**",
+      "desktop/**",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "BoostLite-${version}-Windows.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}
